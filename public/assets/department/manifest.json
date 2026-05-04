@@ -1,0 +1,9 @@
+{
+  "assets": [
+    { "value": "strategy",       "label": "Strategy",        "file": "strategy.svg" },
+    { "value": "creative",       "label": "Creative",        "file": "creative.svg" },
+    { "value": "technology",     "label": "Technology",      "file": "technology.svg" },
+    { "value": "operations",     "label": "Operations",      "file": "operations.svg" },
+    { "value": "client-services","label": "Client Services", "file": "client-services.svg" }
+  ]
+}

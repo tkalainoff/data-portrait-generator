@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Design — pencil on purple circle -->
+  <circle cx="30" cy="30" r="28" fill="#9C27B0"/>
+  <!-- Pencil body -->
+  <rect x="23" y="13" width="14" height="24" rx="2" fill="white"/>
+  <!-- Eraser top -->
+  <rect x="23" y="13" width="14" height="6" rx="2" fill="#CE93D8"/>
+  <!-- Pencil tip -->
+  <polygon points="23,37 37,37 30,50" fill="white"/>
+  <polygon points="26,42 34,42 30,50" fill="#FFCC02"/>
+</svg>

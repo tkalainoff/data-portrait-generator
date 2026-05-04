@@ -1,0 +1,10 @@
+{
+  "assets": [
+    { "value": "bar",     "label": "Bar",     "file": "bar.svg" },
+    { "value": "line",    "label": "Line",    "file": "line.svg" },
+    { "value": "pie",     "label": "Pie",     "file": "pie.svg" },
+    { "value": "scatter", "label": "Scatter", "file": "scatter.svg" },
+    { "value": "map",     "label": "Map",     "file": "map.svg" },
+    { "value": "network", "label": "Network", "file": "network.svg" }
+  ]
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Data — bar chart on teal circle -->
+  <circle cx="30" cy="30" r="28" fill="#00897B"/>
+  <!-- Bars -->
+  <rect x="11" y="38" width="9"  height="14" fill="white"/>
+  <rect x="25" y="28" width="9"  height="24" fill="white"/>
+  <rect x="39" y="18" width="9"  height="34" fill="white"/>
+  <!-- Base line -->
+  <line x1="9" y1="52" x2="50" y2="52" stroke="white" stroke-width="1.5" opacity="0.5"/>
+</svg>

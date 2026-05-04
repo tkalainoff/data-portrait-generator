@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Bar chart motif — vertical bars of varying height -->
+  <!-- Drawn at ~22% opacity over the background -->
+  <g fill="white">
+    <rect x="55"  y="180" width="64" height="420"/>
+    <rect x="155" y="90"  width="64" height="510"/>
+    <rect x="255" y="260" width="64" height="340"/>
+    <rect x="355" y="60"  width="64" height="540"/>
+    <rect x="455" y="160" width="64" height="440"/>
+  </g>
+  <!-- Baseline -->
+  <line x1="40" y1="600" x2="560" y2="600" stroke="white" stroke-width="6"/>
+</svg>

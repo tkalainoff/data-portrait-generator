@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Writing — quill pen on amber circle -->
+  <circle cx="30" cy="30" r="28" fill="#F57F17"/>
+  <!-- Quill shape -->
+  <path d="M46,10 C46,10 18,28 13,50 C13,50 22,40 32,40 C42,40 46,48 46,48 C46,48 54,20 46,10 Z"
+        fill="white" opacity="0.95"/>
+  <path d="M13,50 L30,32" stroke="#E65100" stroke-width="1.5"/>
+</svg>

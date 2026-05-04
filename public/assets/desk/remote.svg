@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Remote — WiFi signal waves -->
+  <path d="M8,26 A31,31 0 0,1 52,26"
+        stroke="#42A5F5" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M15,34 A21,21 0 0,1 45,34"
+        stroke="#42A5F5" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M22,42 A11,11 0 0,1 38,42"
+        stroke="#42A5F5" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="30" cy="51" r="4.5" fill="#42A5F5"/>
+</svg>

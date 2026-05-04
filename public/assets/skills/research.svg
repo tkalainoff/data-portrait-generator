@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Research — magnifying glass on forest green circle -->
+  <circle cx="30" cy="30" r="28" fill="#2E7D32"/>
+  <!-- Magnifying glass lens -->
+  <circle cx="25" cy="25" r="14" stroke="white" stroke-width="4.5" fill="none"/>
+  <!-- Handle -->
+  <line x1="35" y1="35" x2="49" y2="49" stroke="white" stroke-width="5"
+        stroke-linecap="round"/>
+</svg>

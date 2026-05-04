@@ -1,0 +1,9 @@
+{
+  "assets": [
+    { "value": "mentorship",    "label": "Mentorship",    "file": "mentorship.svg" },
+    { "value": "dei",           "label": "DEI",           "file": "dei.svg" },
+    { "value": "sustainability","label": "Sustainability", "file": "sustainability.svg" },
+    { "value": "social",        "label": "Social",        "file": "social.svg" },
+    { "value": "learning",      "label": "Learning",      "file": "learning.svg" }
+  ]
+}

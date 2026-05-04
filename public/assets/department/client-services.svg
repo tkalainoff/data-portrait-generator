@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Client Services — muted rose, concentric ring pattern -->
+  <rect width="600" height="600" fill="#A85070"/>
+  <defs>
+    <pattern id="cs-rings" x="0" y="0" width="70" height="70" patternUnits="userSpaceOnUse">
+      <circle cx="35" cy="35" r="28" stroke="white" stroke-width="1.5" fill="none" opacity="0.2"/>
+      <circle cx="35" cy="35" r="14" stroke="white" stroke-width="1" fill="none" opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="600" fill="url(#cs-rings)"/>
+</svg>

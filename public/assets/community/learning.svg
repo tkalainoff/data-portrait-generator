@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Learning — open book -->
+  <path d="M30,14 L30,52 L9,46 L9,8 Z"  fill="#FFA726"/>
+  <path d="M30,14 L30,52 L51,46 L51,8 Z" fill="#FFB74D"/>
+  <line x1="30" y1="14" x2="30" y2="52" stroke="#E65100" stroke-width="1.8"/>
+  <!-- Left page lines -->
+  <line x1="13" y1="20" x2="27" y2="23" stroke="white" stroke-width="1.5" opacity="0.65"/>
+  <line x1="13" y1="27" x2="27" y2="30" stroke="white" stroke-width="1.5" opacity="0.65"/>
+  <line x1="13" y1="34" x2="27" y2="37" stroke="white" stroke-width="1.5" opacity="0.65"/>
+</svg>

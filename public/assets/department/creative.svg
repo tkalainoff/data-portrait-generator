@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Creative — muted purple, overlapping circles -->
+  <rect width="600" height="600" fill="#7B5EA7"/>
+  <g fill="none" stroke="white" opacity="0.14" stroke-width="2">
+    <circle cx="80"  cy="80"  r="110"/>
+    <circle cx="300" cy="60"  r="130"/>
+    <circle cx="520" cy="100" r="110"/>
+    <circle cx="120" cy="340" r="120"/>
+    <circle cx="420" cy="380" r="140"/>
+    <circle cx="200" cy="520" r="100"/>
+    <circle cx="500" cy="510" r="105"/>
+    <circle cx="300" cy="300" r="160"/>
+  </g>
+  <g fill="white" opacity="0.05">
+    <circle cx="90"  cy="90"  r="55"/>
+    <circle cx="450" cy="180" r="75"/>
+    <circle cx="250" cy="470" r="65"/>
+  </g>
+</svg>

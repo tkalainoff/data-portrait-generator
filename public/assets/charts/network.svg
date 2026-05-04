@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Network graph motif — nodes connected by edges -->
+  <!-- Edges first (under nodes) -->
+  <g stroke="white" stroke-width="4" fill="none" opacity="0.7">
+    <line x1="300" y1="300" x2="300" y2="100"/>
+    <line x1="300" y1="300" x2="150" y2="180"/>
+    <line x1="300" y1="300" x2="460" y2="180"/>
+    <line x1="300" y1="300" x2="120" y2="420"/>
+    <line x1="300" y1="300" x2="480" y2="420"/>
+    <line x1="300" y1="300" x2="300" y2="500"/>
+    <!-- Cross edges -->
+    <line x1="300" y1="100" x2="150" y2="180"/>
+    <line x1="300" y1="100" x2="460" y2="180"/>
+    <line x1="150" y1="180" x2="120" y2="420"/>
+    <line x1="460" y1="180" x2="480" y2="420"/>
+    <line x1="120" y1="420" x2="300" y2="500"/>
+    <line x1="480" y1="420" x2="300" y2="500"/>
+  </g>
+  <!-- Nodes -->
+  <g fill="white">
+    <circle cx="300" cy="300" r="24"/>
+    <circle cx="300" cy="100" r="16"/>
+    <circle cx="150" cy="180" r="16"/>
+    <circle cx="460" cy="180" r="16"/>
+    <circle cx="120" cy="420" r="16"/>
+    <circle cx="480" cy="420" r="16"/>
+    <circle cx="300" cy="500" r="16"/>
+  </g>
+</svg>

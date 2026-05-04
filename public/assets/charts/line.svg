@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Line chart motif — trend line with area fill -->
+  <polyline
+    points="0,480 100,360 200,400 300,180 400,270 500,80 600,140"
+    stroke="white" stroke-width="14" fill="none"
+    stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Area shadow under line -->
+  <polygon
+    points="0,600 0,480 100,360 200,400 300,180 400,270 500,80 600,140 600,600"
+    fill="white" opacity="0.35"/>
+  <!-- Data points -->
+  <circle cx="100" cy="360" r="12" fill="white"/>
+  <circle cx="200" cy="400" r="12" fill="white"/>
+  <circle cx="300" cy="180" r="12" fill="white"/>
+  <circle cx="400" cy="270" r="12" fill="white"/>
+  <circle cx="500" cy="80"  r="12" fill="white"/>
+</svg>

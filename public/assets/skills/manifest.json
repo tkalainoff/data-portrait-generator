@@ -1,0 +1,10 @@
+{
+  "assets": [
+    { "value": "design",       "label": "Design",       "file": "design.svg" },
+    { "value": "data",         "label": "Data",         "file": "data.svg" },
+    { "value": "strategy",     "label": "Strategy",     "file": "strategy.svg" },
+    { "value": "writing",      "label": "Writing",      "file": "writing.svg" },
+    { "value": "research",     "label": "Research",     "file": "research.svg" },
+    { "value": "facilitation", "label": "Facilitation", "file": "facilitation.svg" }
+  ]
+}
