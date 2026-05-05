@@ -1,0 +1,9 @@
+{
+  "assets": [
+    { "value": "new-york", "label": "New York", "file": "new-york.svg" },
+    { "value": "london",   "label": "London",   "file": "london.svg" },
+    { "value": "chicago",  "label": "Chicago",  "file": "chicago.svg" },
+    { "value": "austin",   "label": "Austin",   "file": "austin.svg" },
+    { "value": "remote",   "label": "Remote",   "file": "remote.svg" }
+  ]
+}

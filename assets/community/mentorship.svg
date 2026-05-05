@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Mentorship — two overlapping figures/circles (paired connection) -->
+  <circle cx="22" cy="30" r="16" fill="#FFD54F" opacity="0.92"/>
+  <circle cx="38" cy="30" r="16" fill="#FFAB40" opacity="0.92"/>
+  <!-- Center overlap highlight -->
+  <ellipse cx="30" cy="30" rx="6" ry="10" fill="#FFE082" opacity="0.7"/>
+</svg>

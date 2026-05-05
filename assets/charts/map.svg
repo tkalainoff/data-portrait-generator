@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Map / grid motif — lat/lon-style grid with a route path -->
+  <g stroke="white" stroke-width="1.5" fill="none" opacity="0.9">
+    <!-- Vertical lines -->
+    <line x1="100" y1="0" x2="100" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="600"/>
+    <line x1="300" y1="0" x2="300" y2="600"/>
+    <line x1="400" y1="0" x2="400" y2="600"/>
+    <line x1="500" y1="0" x2="500" y2="600"/>
+    <!-- Horizontal lines -->
+    <line x1="0" y1="100" x2="600" y2="100"/>
+    <line x1="0" y1="200" x2="600" y2="200"/>
+    <line x1="0" y1="300" x2="600" y2="300"/>
+    <line x1="0" y1="400" x2="600" y2="400"/>
+    <line x1="0" y1="500" x2="600" y2="500"/>
+  </g>
+  <!-- Route path -->
+  <polyline
+    points="100,500 100,300 200,300 200,200 400,200 400,100 500,100"
+    stroke="white" stroke-width="8" fill="none"
+    stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Location pins -->
+  <circle cx="100" cy="500" r="14" fill="white"/>
+  <circle cx="500" cy="100" r="14" fill="white"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <!-- PLACEHOLDER: Chicago — six-pointed star (Chicago flag reference) -->
+  <!-- Two overlapping equilateral triangles forming a Star of David / 6-point star -->
+  <polygon points="30,6 54,48 6,48"  fill="#C62828" opacity="0.9"/>
+  <polygon points="30,54 6,12 54,12" fill="#C62828" opacity="0.9"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Scatter plot motif — dots of varying sizes -->
+  <g fill="white">
+    <circle cx="80"  cy="480" r="22"/>
+    <circle cx="160" cy="340" r="14"/>
+    <circle cx="240" cy="420" r="18"/>
+    <circle cx="120" cy="220" r="26"/>
+    <circle cx="300" cy="160" r="16"/>
+    <circle cx="380" cy="300" r="20"/>
+    <circle cx="460" cy="180" r="12"/>
+    <circle cx="200" cy="100" r="24"/>
+    <circle cx="340" cy="440" r="16"/>
+    <circle cx="500" cy="380" r="18"/>
+    <circle cx="420" cy="520" r="14"/>
+    <circle cx="540" cy="260" r="22"/>
+    <circle cx="60"  cy="120" r="16"/>
+    <circle cx="500" cy="80"  r="10"/>
+  </g>
+  <!-- Subtle trend line -->
+  <line x1="40" y1="560" x2="560" y2="80"
+        stroke="white" stroke-width="3" opacity="0.4" stroke-dasharray="16,12"/>
+</svg>

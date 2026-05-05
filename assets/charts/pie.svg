@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Pie chart motif — four unequal slices with gaps -->
+  <!-- Center 300,300 radius 270 -->
+  <!-- Slice 1: 0° to 100° (top to right-ish) -->
+  <path d="M300,300 L300,30 A270,270 0 0,1 566,451 Z" fill="white" opacity="0.9"/>
+  <!-- Slice 2: 100° to 190° -->
+  <path d="M300,300 L566,451 A270,270 0 0,1 153,556 Z" fill="white" opacity="0.7"/>
+  <!-- Slice 3: 190° to 280° -->
+  <path d="M300,300 L153,556 A270,270 0 0,1 34,149 Z" fill="white" opacity="0.5"/>
+  <!-- Slice 4: 280° to 360° -->
+  <path d="M300,300 L34,149 A270,270 0 0,1 300,30 Z"  fill="white" opacity="0.3"/>
+  <!-- Dividing lines (gaps) -->
+  <line x1="300" y1="300" x2="300" y2="30"  stroke="#00000030" stroke-width="4"/>
+  <line x1="300" y1="300" x2="566" y2="451" stroke="#00000030" stroke-width="4"/>
+  <line x1="300" y1="300" x2="153" y2="556" stroke="#00000030" stroke-width="4"/>
+  <line x1="300" y1="300" x2="34"  y2="149" stroke="#00000030" stroke-width="4"/>
+</svg>

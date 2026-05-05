@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- PLACEHOLDER: Operations — muted orange, crosshatch grid flow -->
+  <rect width="600" height="600" fill="#C07830"/>
+  <defs>
+    <pattern id="ops-grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48,0 L0,0 L0,48" stroke="white" stroke-width="1" fill="none" opacity="0.18"/>
+    </pattern>
+    <pattern id="ops-cross" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="48" x2="48" y2="0" stroke="white" stroke-width="0.8" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="600" fill="url(#ops-grid)"/>
+  <rect width="600" height="600" fill="url(#ops-cross)"/>
+</svg>
