@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import JSZip from 'jszip';
+import { jsPDF } from 'jspdf';
 import type { BadgeData } from '../types/badge';
 import { parseAttendees } from '../utils/parseAttendees';
 import { badgeToBlob, renderBadge } from '../utils/badgeRenderer';
@@ -29,10 +30,74 @@ function BadgePreview({ data }: { data: BadgeData }) {
   );
 }
 
+// US Letter: 215.9 × 279.4 mm
+const PAGE_W = 215.9;
+const PAGE_H = 279.4;
+const BLEED = 3.175; // 0.125 inch in mm
+
+// Badge trim size in mm — badge canvas is 450×600 at 150dpi → 76.2×101.6 mm
+const BADGE_TRIM_W = 76.2;
+const BADGE_TRIM_H = 101.6;
+// Cell size including bleed on all sides
+const CELL_W = BADGE_TRIM_W + BLEED * 2;
+const CELL_H = BADGE_TRIM_H + BLEED * 2;
+
+// 2×2 grid: equal margins left/right and top/bottom
+const MARGIN_X = (PAGE_W - CELL_W * 2) / 3; // space left, between, right
+const MARGIN_Y = (PAGE_H - CELL_H * 2) / 3;
+
+async function badgeToDataUrl(data: BadgeData): Promise<string> {
+  const canvas = document.createElement('canvas');
+  await renderBadge(canvas, data);
+  return canvas.toDataURL('image/png');
+}
+
+// Draw L-shaped crop marks at one corner of a trim box.
+// (trimX, trimY) is the corner of the trim boundary.
+// dx/dy indicate which direction marks extend (+1 or -1).
+function drawCropMarks(
+  pdf: jsPDF,
+  trimX: number,
+  trimY: number,
+  dx: number,
+  dy: number,
+) {
+  const GAP = 1;    // mm gap between trim edge and mark start
+  const LEN = 5;    // mm mark length
+
+  // horizontal arm
+  const hx1 = trimX + dx * GAP;
+  const hx2 = trimX + dx * (GAP + LEN);
+  pdf.line(hx1, trimY, hx2, trimY);
+
+  // vertical arm
+  const vy1 = trimY + dy * GAP;
+  const vy2 = trimY + dy * (GAP + LEN);
+  pdf.line(trimX, vy1, trimX, vy2);
+}
+
+function addTrimMarksForCell(pdf: jsPDF, cellX: number, cellY: number) {
+  // Trim boundary sits BLEED inset from the cell (image) edges
+  const tx = cellX + BLEED;
+  const ty = cellY + BLEED;
+  const tx2 = cellX + CELL_W - BLEED;
+  const ty2 = cellY + CELL_H - BLEED;
+
+  pdf.setDrawColor(0);
+  pdf.setLineWidth(0.088); // 0.25pt in mm (1pt = 0.353mm)
+
+  drawCropMarks(pdf, tx,  ty,  -1, -1); // top-left
+  drawCropMarks(pdf, tx2, ty,   1, -1); // top-right
+  drawCropMarks(pdf, tx,  ty2, -1,  1); // bottom-left
+  drawCropMarks(pdf, tx2, ty2,  1,  1); // bottom-right
+}
+
 export function BatchPanel() {
   const [attendees, setAttendees] = useState<BadgeData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const [isProdPdfGenerating, setIsProdPdfGenerating] = useState(false);
 
   const handleFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,6 +137,69 @@ export function BatchPanel() {
     }
   }, [attendees]);
 
+  const handleDownloadPdf = useCallback(async () => {
+    if (attendees.length === 0) return;
+    setIsPdfGenerating(true);
+    try {
+      const pdf = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+
+      for (let i = 0; i < attendees.length; i++) {
+        const col = i % 2;
+        const row = Math.floor(i / 2) % 2;
+        const posInPage = (i % 4);
+
+        if (i > 0 && posInPage === 0) pdf.addPage();
+
+        const x = MARGIN_X + col * (CELL_W + MARGIN_X);
+        const y = MARGIN_Y + row * (CELL_H + MARGIN_Y);
+
+        const dataUrl = await badgeToDataUrl(attendees[i]);
+        pdf.addImage(dataUrl, 'PNG', x, y, CELL_W, CELL_H);
+      }
+
+      pdf.save('badges_print.pdf');
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  }, [attendees]);
+
+  const handleDownloadProdPdf = useCallback(async () => {
+    if (attendees.length === 0) return;
+    setIsProdPdfGenerating(true);
+    try {
+      const pdf = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+
+      for (let i = 0; i < attendees.length; i++) {
+        const col = i % 2;
+        const row = Math.floor(i / 2) % 2;
+        const posInPage = i % 4;
+
+        if (i > 0 && posInPage === 0) pdf.addPage();
+
+        const x = MARGIN_X + col * (CELL_W + MARGIN_X);
+        const y = MARGIN_Y + row * (CELL_H + MARGIN_Y);
+
+        const dataUrl = await badgeToDataUrl(attendees[i]);
+        pdf.addImage(dataUrl, 'PNG', x, y, CELL_W, CELL_H);
+        addTrimMarksForCell(pdf, x, y);
+      }
+
+      // Footer note on each page
+      const pageCount = pdf.getNumberOfPages();
+      for (let p = 1; p <= pageCount; p++) {
+        pdf.setPage(p);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(6);
+        pdf.setTextColor(150);
+        pdf.text('Trim marks shown — bleed 0.125in / 3mm', PAGE_W / 2, PAGE_H - 4, { align: 'center' });
+      }
+
+      pdf.save('badges_production.pdf');
+    } finally {
+      setIsProdPdfGenerating(false);
+    }
+  }, [attendees]);
+
   return (
     <div className="batch-panel">
       <div className="batch-upload-row">
@@ -95,6 +223,26 @@ export function BatchPanel() {
             {isDownloading
               ? `Generating ZIP…`
               : `Download All as ZIP (${attendees.length})`}
+          </button>
+        )}
+
+        {attendees.length > 0 && (
+          <button
+            className="batch-download-btn"
+            onClick={handleDownloadPdf}
+            disabled={isPdfGenerating}
+          >
+            {isPdfGenerating ? `Generating PDF…` : `Download Print PDF`}
+          </button>
+        )}
+
+        {attendees.length > 0 && (
+          <button
+            className="batch-download-btn"
+            onClick={handleDownloadProdPdf}
+            disabled={isProdPdfGenerating}
+          >
+            {isProdPdfGenerating ? `Generating PDF…` : `Download Production PDF`}
           </button>
         )}
       </div>
