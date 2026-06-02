@@ -257,6 +257,186 @@
   color: #fff;
 }
 
+/* ── Mode tabs ───────────────────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.08);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.mode-tab {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  letter-spacing: 0.01em;
+}
+
+.mode-tab:hover {
+  color: rgba(255,255,255,0.9);
+}
+
+.mode-tab.active {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* ── Badges full-width layout ─────────────────────────────────────────────── */
+.app-main-full {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 28px 48px;
+}
+
+/* ── Batch panel ─────────────────────────────────────────────────────────── */
+.batch-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.batch-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.batch-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.batch-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.batch-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #1A1A1A;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.12s;
+}
+
+.batch-upload-label:hover .batch-upload-btn {
+  background: #333;
+}
+
+.batch-download-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1.5px solid #1A1A1A;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  color: #1A1A1A;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.12s, color 0.12s;
+}
+
+.batch-download-btn:hover:not(:disabled) {
+  background: #1A1A1A;
+  color: #fff;
+}
+
+.batch-download-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.batch-error {
+  color: #c0392b;
+  font-size: 13px;
+  padding: 10px 14px;
+  background: #fdf0ed;
+  border-radius: 6px;
+  border: 1px solid #e8c4be;
+}
+
+.batch-empty {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  line-height: 1.6;
+  border: 1.5px dashed #DDD;
+  border-radius: 10px;
+}
+
+.batch-empty code {
+  font-family: monospace;
+  background: #f0f0f0;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+/* ── Badge grid & card ───────────────────────────────────────────────────── */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: 20px;
+}
+
+.badge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #E0DDD8;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.badge-card canvas {
+  border-radius: 4px;
+  max-width: 100%;
+  height: auto;
+}
+
+.badge-card-label {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+}
+
 /* ── Responsive: tablet/mobile (iPad and below) ──────────────────────────── */
 @media (max-width: 900px) {
   .app-main {
