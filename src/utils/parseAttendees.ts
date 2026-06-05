@@ -21,14 +21,14 @@ export async function parseAttendees(file: File): Promise<BadgeData[]> {
   const idx = (name: string) => headers.indexOf(name);
 
   const cols = {
-    firstName:    idx('First name'),
-    lastName:     idx('Last name'),
-    attendee2025: idx('2025Attendee'),
+    firstName:    idx('First Name'),
+    lastName:     idx('Last Name'),
+    attendee2025: idx('2025 Attendee'),
     name:         idx('Name'),
     company:      idx('Company'),
     registration: idx('Registration'),
-    regTimeCode:  idx('Reg Time Code'),
-    attendeeCount:idx('Attendee-count'),
+    regTimeCode:  idx('Time'),
+    attendeeCount:idx('Attendee-Count'),
     attendeeDays: idx('Attendee-Days'),
   };
 

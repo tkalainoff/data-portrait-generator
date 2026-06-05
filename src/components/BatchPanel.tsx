@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 import { jsPDF } from 'jspdf';
 import type { BadgeData } from '../types/badge';
 import { parseAttendees } from '../utils/parseAttendees';
-import { badgeToBlob, renderBadge } from '../utils/badgeRenderer';
+import { badgeToBlob, bleedToBlob, renderBadge, renderBadgeBleed } from '../utils/badgeRenderer';
 
 function assetUrl(path: string): string {
   const base = (import.meta.env.BASE_URL as string).replace(/\/$/, '');
@@ -36,6 +36,7 @@ function drawCanvasCropMarks(
   h: number,
 ) {
   const INSET = 37.5;
+  const GAP = 12;
   const LEN = 54;
   ctx.save();
   ctx.strokeStyle = '#000000';
@@ -51,12 +52,12 @@ function drawCanvasCropMarks(
 
   for (const [tx, ty, dx, dy] of corners) {
     ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(tx + dx * LEN, ty);
+    ctx.moveTo(tx + dx * GAP, ty);
+    ctx.lineTo(tx + dx * (GAP + LEN), ty);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(tx, ty + dy * LEN);
+    ctx.moveTo(tx, ty + dy * GAP);
+    ctx.lineTo(tx, ty + dy * (GAP + LEN));
     ctx.stroke();
   }
 
@@ -83,7 +84,10 @@ async function downloadBackSheet() {
   drawCanvasCropMarks(ctx, 1375, 250,  975, 1275);
   drawCanvasCropMarks(ctx, 200,  1775, 975, 1275);
   drawCanvasCropMarks(ctx, 1375, 1775, 975, 1275);
-  canvas.toBlob((blob) => { if (blob) triggerDownload(blob, 'back_sheet.png'); }, 'image/png');
+  const pdf = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+  const dataUrl = canvas.toDataURL('image/png');
+  pdf.addImage(dataUrl, 'PNG', 0, 0, 215.9, 279.4);
+  pdf.save('back_sheet.pdf');
 }
 
 async function downloadWalkUpBadge() {
@@ -106,7 +110,10 @@ async function downloadWalkUpBadge() {
   drawCanvasCropMarks(ctx, 1375, 250,  975, 1275);
   drawCanvasCropMarks(ctx, 200,  1775, 975, 1275);
   drawCanvasCropMarks(ctx, 1375, 1775, 975, 1275);
-  canvas.toBlob((blob) => { if (blob) triggerDownload(blob, 'walk_up_sheet.png'); }, 'image/png');
+  const pdf = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+  const dataUrl = canvas.toDataURL('image/png');
+  pdf.addImage(dataUrl, 'PNG', 0, 0, 215.9, 279.4);
+  pdf.save('walk_up_sheet.pdf');
 }
 
 const BADGE_W = 225; // display size (half of 450 for 2x density)
@@ -153,6 +160,12 @@ const MARGIN_Y = (PAGE_H - CELL_H * 2) / 3;
 async function badgeToDataUrl(data: BadgeData): Promise<string> {
   const canvas = document.createElement('canvas');
   await renderBadge(canvas, data);
+  return canvas.toDataURL('image/png');
+}
+
+async function badgeToDataUrlBleed(data: BadgeData): Promise<string> {
+  const canvas = document.createElement('canvas');
+  await renderBadgeBleed(canvas, data);
   return canvas.toDataURL('image/png');
 }
 
@@ -224,7 +237,7 @@ export function BatchPanel() {
     try {
       const zip = new JSZip();
       for (const person of attendees) {
-        const blob = await badgeToBlob(person);
+        const blob = await bleedToBlob(person);
         const first = person.firstName.toLowerCase().replace(/\s+/g, '-') || 'unknown';
         const last = person.lastName.toLowerCase().replace(/\s+/g, '-') || 'unknown';
         zip.file(`${first}_${last}_badge.png`, blob);
@@ -283,7 +296,7 @@ export function BatchPanel() {
         const x = MARGIN_X + col * (CELL_W + MARGIN_X);
         const y = MARGIN_Y + row * (CELL_H + MARGIN_Y);
 
-        const dataUrl = await badgeToDataUrl(attendees[i]);
+        const dataUrl = await badgeToDataUrlBleed(attendees[i]);
         pdf.addImage(dataUrl, 'PNG', x, y, CELL_W, CELL_H);
         addTrimMarksForCell(pdf, x, y);
       }
@@ -330,7 +343,8 @@ export function BatchPanel() {
           </button>
         )}
 
-        {attendees.length > 0 && (
+        {/* Print PDF (no crop marks) — temporarily hidden, remove comment to restore */}
+        {/* {attendees.length > 0 && (
           <button
             className="batch-download-btn"
             onClick={handleDownloadPdf}
@@ -338,7 +352,7 @@ export function BatchPanel() {
           >
             {isPdfGenerating ? `Generating PDF…` : `Download Print PDF`}
           </button>
-        )}
+        )} */}
 
         {attendees.length > 0 && (
           <button
@@ -346,16 +360,16 @@ export function BatchPanel() {
             onClick={handleDownloadProdPdf}
             disabled={isProdPdfGenerating}
           >
-            {isProdPdfGenerating ? `Generating PDF…` : `Download Production PDF`}
+            {isProdPdfGenerating ? `Generating PDF…` : `Download Batch Sheet PDF`}
           </button>
         )}
 
         <button className="batch-download-btn" onClick={downloadBackSheet}>
-          Download Back Sheet
+          Download Back Sheet PDF
         </button>
 
         <button className="batch-download-btn" onClick={downloadWalkUpBadge}>
-          Download Walk-Up Badge
+          Download Walk-Up Sheet PDF
         </button>
       </div>
 
