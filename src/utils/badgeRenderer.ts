@@ -52,7 +52,11 @@ export async function renderBadge(
 
   for (const path of layerPaths) {
     const img = await loadImage(path);
-    if (img) ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
+    if (img) {
+      ctx.globalAlpha = 0.85;
+      ctx.drawImage(img, 0, 0, WIDTH, HEIGHT);
+      ctx.globalAlpha = 1.0;
+    }
   }
 
   await Promise.all([
@@ -114,7 +118,11 @@ export async function renderBadgeBleed(
 
   for (const path of layerPaths) {
     const img = await loadImage(path);
-    if (img) ctx.drawImage(img, 0, 0, BLEED_WIDTH, BLEED_HEIGHT);
+    if (img) {
+      ctx.globalAlpha = 0.85;
+      ctx.drawImage(img, 0, 0, BLEED_WIDTH, BLEED_HEIGHT);
+      ctx.globalAlpha = 1.0;
+    }
   }
 
   await Promise.all([
