@@ -209,12 +209,16 @@ function addTrimMarksForCell(pdf: jsPDF, cellX: number, cellY: number) {
   drawCropMarks(pdf, tx2, ty2,  1,  1); // bottom-right
 }
 
+const CHUNK_SIZE = 40;
+
 export function BatchPanel() {
   const [attendees, setAttendees] = useState<BadgeData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
   const [isProdPdfGenerating, setIsProdPdfGenerating] = useState(false);
+  const [isDoublePdfGenerating, setIsDoublePdfGenerating] = useState(false);
+  const [doublePdfProgress, setDoublePdfProgress] = useState('');
 
   const handleFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -230,6 +234,91 @@ export function BatchPanel() {
     // reset input so same file can be re-uploaded
     e.target.value = '';
   }, []);
+
+  const handleDownloadDoubleSidedPdf = useCallback(async () => {
+    if (attendees.length === 0) return;
+    setIsDoublePdfGenerating(true);
+    setDoublePdfProgress('Loading assets…');
+
+    try {
+      const backImg = await loadImageFor(
+        assetUrl('/assets/badge-layers_new/Bleed/bleed_Back.png')
+      );
+
+      let backDataUrl: string | null = null;
+      if (backImg) {
+        const c = document.createElement('canvas');
+        c.width = backImg.naturalWidth || 975;
+        c.height = backImg.naturalHeight || 1275;
+        const ctx = c.getContext('2d');
+        if (ctx) ctx.drawImage(backImg, 0, 0, c.width, c.height);
+        backDataUrl = c.toDataURL('image/png');
+      }
+
+      const totalChunks = Math.ceil(attendees.length / CHUNK_SIZE);
+
+      for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+        const start = chunkIndex * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, attendees.length);
+        const chunk = attendees.slice(start, end);
+
+        setDoublePdfProgress(`Chunk ${chunkIndex + 1} of ${totalChunks}…`);
+
+        const pdf = new jsPDF({ unit: 'mm', format: 'letter', orientation: 'portrait' });
+        let isFirstPage = true;
+
+        for (let i = 0; i < chunk.length; i++) {
+          const posInPage = i % 4;
+          const col = i % 2;
+          const row = Math.floor(i / 2) % 2;
+
+          if (posInPage === 0 && !isFirstPage) {
+            // Back page for the completed group of 4
+            pdf.addPage();
+            for (let b = 0; b < 4; b++) {
+              const bc = b % 2;
+              const br = Math.floor(b / 2);
+              // Mirror column so backs align when flipped on long edge
+              const backCol = 1 - bc;
+              const bx = MARGIN_X + backCol * (CELL_W + MARGIN_X);
+              const by = MARGIN_Y + br * (CELL_H + MARGIN_Y);
+              if (backDataUrl) pdf.addImage(backDataUrl, 'PNG', bx, by, CELL_W, CELL_H);
+              addTrimMarksForCell(pdf, bx, by);
+            }
+            // New front page for the next group
+            pdf.addPage();
+          }
+
+          if (posInPage === 0) isFirstPage = false;
+
+          const x = MARGIN_X + col * (CELL_W + MARGIN_X);
+          const y = MARGIN_Y + row * (CELL_H + MARGIN_Y);
+          const dataUrl = await badgeToDataUrlBleed(chunk[i]);
+          pdf.addImage(dataUrl, 'PNG', x, y, CELL_W, CELL_H);
+          addTrimMarksForCell(pdf, x, y);
+        }
+
+        // Back page for the last (possibly partial) group
+        const lastGroupCount = chunk.length % 4 || 4;
+        pdf.addPage();
+        for (let b = 0; b < lastGroupCount; b++) {
+          const bc = b % 2;
+          const br = Math.floor(b / 2);
+          const backCol = 1 - bc;
+          const bx = MARGIN_X + backCol * (CELL_W + MARGIN_X);
+          const by = MARGIN_Y + br * (CELL_H + MARGIN_Y);
+          if (backDataUrl) pdf.addImage(backDataUrl, 'PNG', bx, by, CELL_W, CELL_H);
+          addTrimMarksForCell(pdf, bx, by);
+        }
+
+        const suffix = totalChunks > 1 ? `_${chunkIndex + 1}of${totalChunks}` : '';
+        pdf.save(`badges_double_sided${suffix}.pdf`);
+      }
+    } finally {
+      setIsDoublePdfGenerating(false);
+      setDoublePdfProgress('');
+    }
+  }, [attendees]);
 
   const handleDownloadAll = useCallback(async () => {
     if (attendees.length === 0) return;
@@ -330,6 +419,18 @@ export function BatchPanel() {
           />
           <span className="batch-upload-btn">Choose file</span>
         </label>
+
+        {attendees.length > 0 && (
+          <button
+            className="batch-download-btn"
+            onClick={handleDownloadDoubleSidedPdf}
+            disabled={isDoublePdfGenerating}
+          >
+            {isDoublePdfGenerating
+              ? (doublePdfProgress || 'Generating PDF…')
+              : `Download Batch Sheet PDF (Double-Sided)`}
+          </button>
+        )}
 
         {attendees.length > 0 && (
           <button
