@@ -27,23 +27,26 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <div className="header-inner">
+        <div className="header-left">
+          <div className="header-logo-placeholder" />
           <span className="header-eyebrow">Innovation Week</span>
-          <h1 className="header-title">Data Portrait Generator</h1>
         </div>
-        <div className="mode-tabs">
-          <button
-            className={`mode-tab${mode === 'portrait' ? ' active' : ''}`}
-            onClick={() => setMode('portrait')}
-          >
-            Portrait
-          </button>
-          <button
-            className={`mode-tab${mode === 'badges' ? ' active' : ''}`}
-            onClick={() => setMode('badges')}
-          >
-            Badges
-          </button>
+        <div className="header-right">
+          <h1 className="header-title">Data Portrait Generator</h1>
+          <div className="mode-tabs">
+            <button
+              className={`mode-tab${mode === 'portrait' ? ' active' : ''}`}
+              onClick={() => setMode('portrait')}
+            >
+              Portrait
+            </button>
+            <button
+              className={`mode-tab${mode === 'badges' ? ' active' : ''}`}
+              onClick={() => setMode('badges')}
+            >
+              Badges
+            </button>
+          </div>
         </div>
       </header>
 
