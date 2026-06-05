@@ -5,6 +5,110 @@ import type { BadgeData } from '../types/badge';
 import { parseAttendees } from '../utils/parseAttendees';
 import { badgeToBlob, renderBadge } from '../utils/badgeRenderer';
 
+function assetUrl(path: string): string {
+  const base = (import.meta.env.BASE_URL as string).replace(/\/$/, '');
+  return `${base}${path}`;
+}
+
+async function loadImageFor(src: string): Promise<HTMLImageElement | null> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function triggerDownload(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function drawCanvasCropMarks(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+) {
+  const INSET = 37.5;
+  const LEN = 54;
+  ctx.save();
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'butt';
+
+  const corners: [number, number, number, number][] = [
+    [x + INSET,     y + INSET,     -1, -1], // top-left
+    [x + w - INSET, y + INSET,      1, -1], // top-right
+    [x + INSET,     y + h - INSET, -1,  1], // bottom-left
+    [x + w - INSET, y + h - INSET,  1,  1], // bottom-right
+  ];
+
+  for (const [tx, ty, dx, dy] of corners) {
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(tx + dx * LEN, ty);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(tx, ty + dy * LEN);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+async function downloadBackSheet() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2550;
+  canvas.height = 3300;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, 2550, 3300);
+  const img = await loadImageFor(assetUrl('/assets/badge-layers_new/Bleed/bleed_Back.png'));
+  if (img) {
+    for (const x of [200, 1375]) {
+      for (const y of [250, 1775]) {
+        ctx.drawImage(img, x, y, 975, 1275);
+      }
+    }
+  }
+  drawCanvasCropMarks(ctx, 200,  250,  975, 1275);
+  drawCanvasCropMarks(ctx, 1375, 250,  975, 1275);
+  drawCanvasCropMarks(ctx, 200,  1775, 975, 1275);
+  drawCanvasCropMarks(ctx, 1375, 1775, 975, 1275);
+  canvas.toBlob((blob) => { if (blob) triggerDownload(blob, 'back_sheet.png'); }, 'image/png');
+}
+
+async function downloadWalkUpBadge() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2550;
+  canvas.height = 3300;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, 2550, 3300);
+  const img = await loadImageFor(assetUrl('/assets/badge-layers_new/Bleed/bleed_BLANK_WALK-UP.png'));
+  if (img) {
+    for (const x of [200, 1375]) {
+      for (const y of [250, 1775]) {
+        ctx.drawImage(img, x, y, 975, 1275);
+      }
+    }
+  }
+  drawCanvasCropMarks(ctx, 200,  250,  975, 1275);
+  drawCanvasCropMarks(ctx, 1375, 250,  975, 1275);
+  drawCanvasCropMarks(ctx, 200,  1775, 975, 1275);
+  drawCanvasCropMarks(ctx, 1375, 1775, 975, 1275);
+  canvas.toBlob((blob) => { if (blob) triggerDownload(blob, 'walk_up_sheet.png'); }, 'image/png');
+}
+
 const BADGE_W = 225; // display size (half of 450 for 2x density)
 const BADGE_H = 300;
 
@@ -245,6 +349,14 @@ export function BatchPanel() {
             {isProdPdfGenerating ? `Generating PDF…` : `Download Production PDF`}
           </button>
         )}
+
+        <button className="batch-download-btn" onClick={downloadBackSheet}>
+          Download Back Sheet
+        </button>
+
+        <button className="batch-download-btn" onClick={downloadWalkUpBadge}>
+          Download Walk-Up Badge
+        </button>
       </div>
 
       {error && <p className="batch-error">{error}</p>}
